@@ -38,6 +38,7 @@ $h36-font-weight: 400 !default;
 $cell-code-font-weight: normal !default;
 $body-font-weight: 300 !default;
 $authors-block-gap: 4em !default;
+$print-header-height: 100px !default;
 
 /*-- scss:rules --*/
 
@@ -188,6 +189,69 @@ $authors-block-gap: 4em !default;
     
     .hedaer-title h2 {
       color: #fff !important;
+    }
+  }
+
+  @media print {
+    div.reveal-header {
+      display: none !important;
+    }
+
+    div.slides section.title-slide:not(#title-slide),
+    div.slides section.level1.title-slide {
+      min-height: calc(100vh + 4px) !important;
+      height: calc(100vh + 4px) !important;
+      box-sizing: border-box;
+      background-color: $primary-color !important;
+    }
+
+    div.slides .pdf-page .slide-background.title-slide {
+      top: 0 !important;
+      bottom: -8px !important;
+      height: auto !important;
+      min-height: 0 !important;
+      background-color: $primary-color !important;
+    }
+
+    div.slides .pdf-page:not(:has(.slide-background.title-slide))::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background-color: $header-bg-color;
+      z-index: 9;
+    }
+
+    div.slides section:not(.title-slide):not(#title-slide):not(.stack) {
+      padding-top: $print-header-height !important;
+    }
+
+    div.slides section.smaller:not(.title-slide):not(#title-slide):not(.stack) {
+      padding-top: calc(2em + #{$print-header-height}) !important;
+    }
+
+    div.slides section.scrollable:not(.title-slide):not(#title-slide):not(.stack) {
+      overflow: visible !important;
+    }
+
+    div.slides section:not(.title-slide):not(#title-slide):not(.stack) > h2:first-child {
+      display: block !important;
+      position: absolute;
+      top: calc((700px - 100vh) / 2);
+      left: calc((1050px - 100vw) / 2);
+      right: calc((1050px - 100vw) / 2);
+      box-sizing: border-box;
+      margin: 0;
+      padding: 15px 60px 10px 60px;
+      height: $print-header-height;
+      width: auto;
+      background: $header-bg-color;
+      color: #fff !important;
+      font-family: $presentation-h-font12;
+      font-weight: $h12-font-weight;
+      z-index: 10;
     }
   }
   

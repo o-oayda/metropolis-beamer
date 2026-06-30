@@ -8,6 +8,55 @@
 
 function header() {
   
+  function is_print_pdf_mode() {
+    return /print-pdf/gi.test(window.location.search) ||
+      Reveal?.getConfig?.().view === "print";
+  };
+
+  function match_print_page_size() {
+    const print_page = document.querySelector(".pdf-page");
+    if (print_page == null) {
+      return false;
+    };
+
+    const print_page_rect = print_page.getBoundingClientRect();
+    if (print_page_rect.width === 0 || print_page_rect.height === 0) {
+      return false;
+    };
+
+    let page_style = document.getElementById("metropolis-print-page-size");
+    if (page_style == null) {
+      page_style = document.createElement("style");
+      page_style.id = "metropolis-print-page-size";
+      document.head.appendChild(page_style);
+    };
+
+    const page_height = Math.max(Math.floor(print_page_rect.height) - 1, 1);
+    page_style.textContent =
+      `@page { size: ${print_page_rect.width}px ${page_height}px; margin: 0px; }
+       html.reveal-print .reveal .slides .pdf-page { height: ${page_height}px !important; }`;
+    return true;
+  };
+
+  function watch_print_page_size() {
+    if (match_print_page_size()) {
+      return;
+    };
+
+    const slides = document.querySelector(".reveal .slides") || document.body;
+    const observer = new MutationObserver(() => {
+      if (match_print_page_size()) {
+        observer.disconnect();
+      };
+    });
+
+    observer.observe(slides, { childList: true, subtree: true });
+    setTimeout(() => {
+      match_print_page_size();
+      observer.disconnect();
+    }, 1000);
+  };
+
   // add the header structure as the firstChild of div.reveal-header
   function add_header() {
     let header = document.querySelector("div.reveal-header");
@@ -66,13 +115,20 @@ function header() {
   
   if (Reveal.isReady()) {
     add_header();
+    const is_print_pdf = is_print_pdf_mode();
+
+    if (is_print_pdf) {
+      watch_print_page_size();
+    };
     
     const slides = Reveal.getSlides();
     slides.forEach(slide => {
       const h2Element = slide.querySelector('h2');
       
       if (h2Element) {
-        h2Element.style.display = 'none';
+        if (!is_print_pdf) {
+          h2Element.style.display = 'none';
+        };
         const h2Text = h2Element.textContent;
         slide.setAttribute('data-h2-text', h2Text);
       } else {
@@ -80,7 +136,9 @@ function header() {
       };
   });
     
-    make_h2_title();
+    if (!is_print_pdf) {
+      make_h2_title();
+    };
     
     /*************** linkifying the header and footer logo ********************/
     const header_logo = document.querySelector('div.header-logo');
@@ -96,9 +154,11 @@ function header() {
     };
     /****************************** END ***************************************/
     
-    Reveal.on( 'slidechanged', event => {
-      make_h2_title();
-    });
+    if (!is_print_pdf) {
+      Reveal.on( 'slidechanged', event => {
+        make_h2_title();
+      });
+    };
     
   };
 };
