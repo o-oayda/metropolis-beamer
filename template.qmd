@@ -2,9 +2,10 @@
 title: Metropolis Beamer Theme for Revealjs
 subtitle: A theme inspired by [beamer metropolis theme](https://www.overleaf.com/latex/templates/metropolis-beamer-theme/qzyvdhrntfmr)
 format: 
-  metropolis-beamer-revealjs: default
+  metropolis-beamer-revealjs:
+    header-scale: auto
     # theme: style.scss
-header-logo: images/rstudio.png
+# header-logo: images/rstudio.png
 header-logo-link: "https://posit.co/"
 slide-number: "c"
 author:
@@ -138,16 +139,6 @@ This is a example block
 : Fruit prices {#tbl-markdown tbl-colwidths="[75,25]"}
 
 @tbl-markdown is created using markdown.
-
-## Tables
-
-```{r}
-#| label: tbl-co2
-#| tbl-cap: Carbon Dioxide Uptake in Grass Plants (Data from R)
-knitr::kable(head(CO2))
-```
-
-For details of @tbl-co2, check by running `?CO2` in R console.
 
 ## Images
 

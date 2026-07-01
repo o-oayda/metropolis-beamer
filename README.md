@@ -52,6 +52,7 @@ format: metropolis-beamer-revealjs
 |--------------------|-------------------------------------------------------------------------------|
 | `header-logo`      | A path for logo image which will appear on the top-left corner of each slide. |
 | `header-logo-link` | A web link to linkify the `header-logo`.                                      |
+| `header-scale`     | Header scaling mode. Use `fixed` for the existing header size, or `auto` to scale the floating header with the Reveal.js slide scale. Defaults to `fixed`. |
 
 
 ## Customization
