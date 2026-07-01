@@ -24,6 +24,17 @@ SOFTWARE.
 
 local str = pandoc.utils.stringify
 
+local function normalize_header_scale(meta)
+  local header_scale = meta['header-scale'] and str(meta['header-scale']) or "fixed"
+  header_scale = string.lower(header_scale)
+
+  if header_scale ~= "auto" then
+    header_scale = "fixed"
+  end
+
+  return header_scale
+end
+
 local function ensureHtmlDeps()
   quarto.doc.add_html_dependency({
     name = "metropolis-beamer",
@@ -67,6 +78,7 @@ if quarto.doc.is_format('revealjs') then
     local str = pandoc.utils.stringify
     local meta = doc.meta
     -- make divs structure for holding text and logo.
+    local header_scale = normalize_header_scale(meta)
     local header_logo = meta['header-logo'] and str(meta['header-logo']) or ""
     local header_logo_link = meta['header-logo-link'] and str(meta['header-logo-link']) or ""
     local header_img = pandoc.Div(pandoc.Image("", header_logo, ""), {class = "header-logo"})
@@ -83,6 +95,7 @@ if quarto.doc.is_format('revealjs') then
         header_img
       }, 
       {class = 'reveal-header'})
+    div.attributes['header-scale'] = header_scale
     table.insert(blocks, div)
     return doc
   end

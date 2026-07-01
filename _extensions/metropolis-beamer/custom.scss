@@ -39,6 +39,7 @@ $cell-code-font-weight: normal !default;
 $body-font-weight: 300 !default;
 $authors-block-gap: 4em !default;
 $print-header-height: 100px !default;
+$header-title-font-size: $presentation-h2-font-size !default;
 
 /*-- scss:rules --*/
 
@@ -169,19 +170,23 @@ $print-header-height: 100px !default;
 
   div.header-title { 
     grid-area: ht;
-    padding-left: 60px;
-    padding-top: 15px;
-    padding-bottom: 10px;
+    padding-left: var(--metropolis-header-title-padding-left, 60px);
+    padding-top: var(--metropolis-header-title-padding-top, 15px);
+    padding-bottom: var(--metropolis-header-title-padding-bottom, 10px);
+
+    h2 {
+      font-size: var(--metropolis-header-title-font-size, #{$header-title-font-size});
+    }
   }
   
   div.reveal-header {
     display: grid;
     grid-template-columns: 3fr 0.35fr;
     grid-template-areas: "ht logo";
-    column-gap: 10px;
+    column-gap: var(--metropolis-header-column-gap, 10px);
     align-items: center;
-    top: -5px;
-    margin: 3.2px 0px 2px 0px;
+    top: var(--metropolis-header-top, -5px);
+    margin: var(--metropolis-header-margin-top, 3.2px) 0px var(--metropolis-header-margin-bottom, 2px) 0px;
     width: 100%;
     position: fixed;
     background: $header-bg-color;
@@ -272,12 +277,12 @@ $print-header-height: 100px !default;
   .header-logo svg{
     margin: 0px 0px 0px 0px;
     padding-left: 3vw;
-    padding-right: 18px;
-    padding-top: 12px;
+    padding-right: var(--metropolis-header-logo-padding-right, 18px);
+    padding-top: var(--metropolis-header-logo-padding-top, 12px);
     height: 100%;
     width: auto;
-    max-width: max(80px, 12vw);
-    max-height: max(80px, 12vh);
+    max-width: var(--metropolis-header-logo-max-width, max(80px, 12vw));
+    max-height: var(--metropolis-header-logo-max-height, max(80px, 12vh));
   }
 
   img {
